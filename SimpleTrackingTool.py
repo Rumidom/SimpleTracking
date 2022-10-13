@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import PySimpleGUI as sg
 
-sg.theme('DarkAmber')   # Add a touch of color
+sg.theme('DarkAmber')  
 
 img=np.zeros([512, 512, 3], np.uint8)
 for i in range(img.shape[1]):
@@ -24,11 +24,11 @@ ColumnA = [
 [sg.Text(' Output Folder:')],
 [sg.Input(enable_events=True, key="OUTPUTBROWSE"), sg.FolderBrowse('Search Folder')],
 
-[sg.Text(' Tracking Retangle: ', key='up_Text')],
-[sg.Text(' Pos - X '),sg.Slider(range=(0,180),size=(40, 15), default_value=0, key='rectX', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
-[sg.Text(' Pos - Y'),sg.Slider(range=(0,255),size=(40, 15), default_value=0,  key='rectY', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
-[sg.Text(' Height '),sg.Slider(range=(0,255),size=(40, 15), default_value=100,  key='rectHeight', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
-[sg.Text(' Width '),sg.Slider(range=(0,180),size=(40, 15), default_value=100, key='rectWidth', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
+[sg.Text('Tracking Retangle: ', key='up_Text')],
+[sg.Text('Pos - X '),sg.Slider(range=(0,180),size=(40, 15), default_value=0, key='rectX', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
+[sg.Text('Pos - Y'),sg.Slider(range=(0,255),size=(40, 15), default_value=0,  key='rectY', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
+[sg.Text('Height ',key= 'txtHeight',size=(8, 1)),sg.Slider(range=(0,255),size=(40, 15), default_value=100,  key='rectHeight', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
+[sg.Text('Width ',key= 'txtWidth',size=(8, 1)),sg.Slider(range=(0,180),size=(40, 15), default_value=100, key='rectWidth', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
 [sg.Button('Get Starting Tracking Points',key='StartPoints',disabled=True)],
 [sg.Button('StartTracking',key='StartTracking',disabled=True),sg.Text('...',key='trackingINFO',size=(40, 1))], 
 ]
@@ -45,7 +45,7 @@ layout = [
     ]
 ]
 
-# Create the Window
+# Create the Window and initialize variables
 window = sg.Window('SimpleTracking', layout)
 first_frame = None
 old_gray = None
@@ -146,9 +146,11 @@ while True:
 				frame = UpdateRectangle(first_frame)
 			if ((event == "rectY") and (ret == True)):
 				frame = UpdateRectangle(first_frame)	
-			if ((event == "rectHeight") and (ret == True)):	
+			if ((event == "rectHeight") and (ret == True)):
+				window["txtHeight"].update("Height " + str(int(values['rectHeight'])))
 				frame = UpdateRectangle(first_frame)
-			if ((event == "rectWidth") and (ret == True)):	
+			if ((event == "rectWidth") and (ret == True)):
+				window["txtWidth"].update("Width " + str(int(values['rectWidth'])))	
 				frame = UpdateRectangle(first_frame)
 			if (((event == "StartPoints") and (ret == True)) or ((event == "OUTPUTBROWSE") and (ret == True)) ):	
 				p0 = GetStartP0(first_frame)
