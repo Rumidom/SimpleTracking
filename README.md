@@ -8,4 +8,4 @@
 
 ### How to use:
 
-Install dependencies and then run SimpleTracking Tool.py.
+Install dependencies and then run SimpleTrackingTool.py.
