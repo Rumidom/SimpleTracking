@@ -29,7 +29,7 @@ ColumnA = [
 [sg.Text('Pos - Y'),sg.Slider(range=(0,255),size=(40, 15), default_value=0,  key='rectY', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
 [sg.Text('Height ',key= 'txtHeight',size=(8, 1)),sg.Slider(range=(0,255),size=(40, 15), default_value=100,  key='rectHeight', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
 [sg.Text('Width ',key= 'txtWidth',size=(8, 1)),sg.Slider(range=(0,180),size=(40, 15), default_value=100, key='rectWidth', orientation='h',enable_events=True, disable_number_display=True,disabled=True)],
-[sg.Button('Get Starting Tracking Points',key='StartPoints',disabled=True)],
+[sg.Button('Get Starting Tracking Points',key='StartPoints',disabled=True),sg.Button('Clear Starting Tracking Points',key='ClearPoints',disabled=True)],
 [sg.Button('StartTracking',key='StartTracking',disabled=True),sg.Text('...',key='trackingINFO',size=(40, 1))], 
 ]
 
@@ -158,7 +158,10 @@ while True:
 					window['StartTracking'].update(disabled=False)
 				else:
 					window['StartTracking'].update(disabled=True)
-
+			
+			if ((event == "ClearPoints") and (ret == True)):
+				p0 = np.array([])
+			
 			for p in p0:
 				cv2.circle(frame, (int(p[0][0]), int(p[0][1])), 5, blue, -1)
 			
@@ -200,7 +203,7 @@ while True:
 					meanx = int(sumx/d)
 					meany = int(sumy/d)
 					p0 = good_new.reshape(-1, 1, 2)
-					
+
 				t0 = [meanx + diffx,meany + diffy] 
 				t1 = [t0[0]+int(values['rectWidth']),t0[1]+int(values['rectHeight'])]
 
