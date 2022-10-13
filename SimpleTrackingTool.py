@@ -177,8 +177,15 @@ while True:
 				frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 				p1, st, err = cv2.calcOpticalFlowPyrLK(old_gray, frame_gray, p0, None, **lk_params)
 
-				good_new = p1[st == 1]
-				good_old = p0[st == 1]
+				d = 1
+				good_new = np.array([])
+				good_old = np.array([])
+				if not p1 is None: 
+					d = len(p1)
+					good_new = p1[st == 1]
+
+				if len(p0) > 0:
+					good_old = p0[st == 1]
 
 				# Draw tracked points
 				sumx = 0
@@ -189,9 +196,11 @@ while True:
 					sumx += new[0]
 					sumy += new[1]
 
-				meanx = int(sumx/len(good_new))
-				meany = int(sumy/len(good_new))
-
+				if len(good_new) > 0:
+					meanx = int(sumx/d)
+					meany = int(sumy/d)
+					p0 = good_new.reshape(-1, 1, 2)
+					
 				t0 = [meanx + diffx,meany + diffy] 
 				t1 = [t0[0]+int(values['rectWidth']),t0[1]+int(values['rectHeight'])]
 
@@ -214,7 +223,8 @@ while True:
 				out.write(crop)
 
 				old_gray = frame_gray.copy()
-				p0 = good_new.reshape(-1, 1, 2)
+
+				
 
 			if not ret:
 				print("Last Frame")
