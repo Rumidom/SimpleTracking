@@ -1,13 +1,12 @@
 import cv2
 import numpy as np
 import PySimpleGUI as sg
-import math
 
 sg.theme('DarkAmber')   # Add a touch of color
 
 img=np.zeros([512, 512, 3], np.uint8)
 for i in range(img.shape[1]):
-	d = int(math.ceil(i/2))
+	d = int(np.ceil(i/2))
 	img[:,i,:] = np.array([d,d,d],np.uint8)
 
 img = cv2.applyColorMap(img,cv2.COLORMAP_HSV)
