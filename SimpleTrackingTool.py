@@ -161,7 +161,8 @@ while True:
 			
 			if ((event == "ClearPoints") and (ret == True)):
 				p0 = np.array([])
-			
+				UpdateRectangle(first_frame)
+				
 			for p in p0:
 				cv2.circle(frame, (int(p[0][0]), int(p[0][1])), 5, blue, -1)
 			
